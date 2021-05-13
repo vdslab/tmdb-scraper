@@ -45,7 +45,7 @@ const getMovies = async (year) => {
     const pageData = await getPage(page, params);
     console.log(pageData.page);
     a.push(...pageData.results);
-    if (page === 2) break;
+    // if (page === 2) break;
   }
 
   return a;
