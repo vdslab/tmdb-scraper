@@ -5,25 +5,28 @@ const getMovies = require("./getMovies");
 const getMoviesDetails = require("./getMoviesDetails");
 const getMoviesCredits = require("./getMoviesCredits");
 
-const YEAR = 2021;
-
-const moviesPath = `./data/${YEAR}/JP_MOVIES.json`;
-const moviesDetailsPath = `./data/${YEAR}/JP_DETAILS.json`;
-const moviesCreditsPath = `./data/${YEAR}/JP_CREDITS.json`;
+const FROM = 2000;
+const TO = 2021;
 
 const writeJSON = (path, data) => {
   fs.writeFileSync(path, JSON.stringify(data));
 };
 
 const main = async () => {
-  const movies = await getMovies(YEAR);
-  writeJSON(moviesPath, { data: movies });
+  for (let year = FROM; year <= TO; ++year) {
+    const moviesPath = `./data/${year}/JP_MOVIES.json`;
+    const moviesDetailsPath = `./data/${year}/JP_DETAILS.json`;
+    const moviesCreditsPath = `./data/${year}/JP_CREDITS.json`;
 
-  const moviesDetails = await getMoviesDetails(movies);
-  writeJSON(moviesDetailsPath, { data: moviesDetails });
+    const movies = await getMovies(year);
+    writeJSON(moviesPath, { data: movies });
 
-  const moviesCredits = await getMoviesCredits(movies);
-  writeJSON(moviesCreditsPath, { data: moviesCredits });
+    const moviesDetails = await getMoviesDetails(movies);
+    writeJSON(moviesDetailsPath, { data: moviesDetails });
+
+    const moviesCredits = await getMoviesCredits(movies);
+    writeJSON(moviesCreditsPath, { data: moviesCredits });
+  }
 };
 
 main();
