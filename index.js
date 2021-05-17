@@ -5,7 +5,7 @@ const getMovies = require("./getMovies");
 const getMoviesDetails = require("./getMoviesDetails");
 const getMoviesCredits = require("./getMoviesCredits");
 
-const FROM = 2000;
+const FROM = 2009;
 const TO = 2021;
 
 const writeJSON = (path, data) => {
