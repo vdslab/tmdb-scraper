@@ -5,8 +5,8 @@ const getMovies = require("./getMovies");
 const getMoviesDetails = require("./getMoviesDetails");
 const getMoviesCredits = require("./getMoviesCredits");
 
-const FROM = 2009;
-const TO = 2021;
+const FROM = 2014;
+const TO = 2016;
 
 const writeJSON = (path, data) => {
   fs.writeFileSync(path, JSON.stringify(data));
