@@ -1,41 +1,38 @@
 # coding: utf-8
 import pprint
 import json
-# print([json.dumps(l) for l in csv.DictReader(open('data2.csv'))])
 years = 2000
-genres_data = []
-json_list = {}
+count_dict = {}
 id_list = set()
-id_name = {}
-for year in range(years, 2022):
+id_name_dict = {}
+for year in range(years, 2021+1):
     json_open = open(
         "../data/{year}/JP_CREDITS.json".format(year=year), "r", encoding="utf-8")
     json_load = json.load(json_open)
     json_load = json_load["data"]
-    # print(json_load[0]["cast"])
-    for i in json_load:
-        if "cast" in i and len(i["cast"]) != 0:
+    for json_about in json_load:
+        if "cast" in json_about and len(json_about["cast"]) != 0:
             allcast = []
-            for j in i["cast"]:
-                id_list.add(j["id"])
-                id_name[j["id"]] = j["name"]
-                allcast.append(j["id"])
+            for json_cast in json_about["cast"]:
+                id_list.add(json_cast["id"])
+                id_name_dict[json_cast["id"]] = json_cast["name"]
+                allcast.append(json_cast["id"])
             allcast.sort()
-            for j in range(len(allcast)-1):
-                if f"{allcast[j]}" not in json_list:
-                    json_list[f"{allcast[j]}"] = {}
-                for k in range(j+1, len(allcast)):
-                    if allcast[k] in json_list[f"{allcast[j]}"]:
-                        json_list[f"{allcast[j]}"][f"{allcast[k]}"] += 1
+            for i in range(len(allcast)-1):  # ここらへん添え字だから許して
+                if f"{allcast[i]}" not in count_dict:
+                    count_dict[f"{allcast[i]}"] = {}
+                for j in range(i+1, len(allcast)):
+                    if f"{allcast[j]}" in count_dict[f"{allcast[i]}"]:
+                        count_dict[f"{allcast[i]}"][f"{allcast[j]}"] += 1
                     else:
-                        json_list[f"{allcast[j]}"][f"{allcast[k]}"] = 1
+                        count_dict[f"{allcast[i]}"][f"{allcast[j]}"] = 1
 id_list = sorted(list(id_list))
-network_json = {"id": id_list, "id_name": id_name, "count": json_list}
+network_json = {"id": id_list, "id_name": id_name_dict, "count": count_dict}
 
 
-with open('networkData2021.json', 'w',  encoding="utf-8_sig") as f:
+with open('networkData.json', 'w',  encoding="utf-8_sig") as f:
     json.dump(network_json, f, ensure_ascii=False)
 
 # JSONファイルのロード
-with open('networkData2021.json', 'r',  encoding="utf-8_sig") as f:
+with open('networkData.json', 'r',  encoding="utf-8_sig") as f:
     json_output = json.load(f)
