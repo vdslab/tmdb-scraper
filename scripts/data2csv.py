@@ -12,7 +12,7 @@ header = sorted(['adult', 'backdrop_path',
                  'spoken_languages',  # array
                  'status', 'tagline', 'title', 'video', 'vote_average', 'vote_count'])
 
-with open('../data/csv/JP_DETAILS.csv', encoding='utf_8_sig', mode='w') as f_w:
+with open('../data/csv/JP_DETAILS_REVENUE.csv', encoding='utf_8_sig', mode='w', newline="") as f_w:
     writer = csv.writer(f_w)
     w = [header]
     # writer.writerow(header)
@@ -22,9 +22,10 @@ with open('../data/csv/JP_DETAILS.csv', encoding='utf_8_sig', mode='w') as f_w:
 
             for row in json_load['data']:
                 r = []
-                for h in header:
-                    if h in row:
-                        r.append(row[h])
-                w.append(r)
+                if "revenue" in row and row["revenue"] != 0:
+                    for h in header:
+                        if h in row:
+                            r.append(row[h])
+                    w.append(r)
                 # writer.writerow(r)
     writer.writerows(w)
