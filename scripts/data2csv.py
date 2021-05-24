@@ -12,9 +12,9 @@ header = sorted(['adult', 'backdrop_path',
                  'spoken_languages',  # array
                  'status', 'tagline', 'title', 'video', 'vote_average', 'vote_count'])
 
-with open('../data/csv/JP_DETAILS_REVENUE.csv', encoding='utf_8_sig', mode='w', newline="") as f_w:
+with open('../data/csv/JP_DETAILS_REVENUE_FILTER.csv', encoding='utf_8_sig', mode='w', newline='') as f_w:
     writer = csv.writer(f_w)
-    w = [header]
+    w = []
     # writer.writerow(header)
     for year in range(2000, 2021 + 1):
         with open(f'../data/{year}/JP_DETAILS.json', encoding='utf-8') as f_r:
@@ -28,4 +28,6 @@ with open('../data/csv/JP_DETAILS_REVENUE.csv', encoding='utf_8_sig', mode='w', 
                             r.append(row[h])
                     w.append(r)
                 # writer.writerow(r)
+    w = sorted(w, reverse=True, key=lambda x: int(x[16]))
+    w.insert(0, header)
     writer.writerows(w)
